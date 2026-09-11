@@ -9,6 +9,14 @@ echo.
 set PYTHON_CMD=python
 if exist ".venv\Scripts\python.exe" set PYTHON_CMD=.venv\Scripts\python.exe
 
+netstat -ano | findstr 11434 >nul 2>&1
+if %ERRORLEVEL% neq 0 (
+    if exist "%LOCALAPPDATA%\Programs\Ollama\ollama.exe" (
+        echo Starting Ollama service...
+        start "" /b "%LOCALAPPDATA%\Programs\Ollama\ollama.exe" serve
+    )
+)
+
 echo Starting TrustRAG Backend (FastAPI on http://127.0.0.1:8000)...
 start "TrustRAG Backend" cmd /k "%PYTHON_CMD% -m uvicorn backend.api:app --host 127.0.0.1 --port 8000 --reload"
 
