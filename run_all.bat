@@ -6,8 +6,11 @@ echo       Maintained by Md. Fahim Istiaq Siam
 echo ========================================================
 echo.
 
+set PYTHON_CMD=python
+if exist ".venv\Scripts\python.exe" set PYTHON_CMD=.venv\Scripts\python.exe
+
 echo Starting TrustRAG Backend (FastAPI on http://127.0.0.1:8000)...
-start "TrustRAG Backend" cmd /k "python -m uvicorn backend.api:app --host 127.0.0.1 --port 8000 --reload"
+start "TrustRAG Backend" cmd /k "%PYTHON_CMD% -m uvicorn backend.api:app --host 127.0.0.1 --port 8000 --reload"
 
 echo Starting TrustRAG Webapp (Next.js on http://localhost:3000)...
 cd webapp
