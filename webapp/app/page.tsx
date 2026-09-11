@@ -38,6 +38,10 @@ export default function Home() {
 
   React.useEffect(() => {
     void refreshHealth();
+    const interval = setInterval(() => {
+      void refreshHealth();
+    }, 4000);
+    return () => clearInterval(interval);
   }, [refreshHealth]);
 
   const send = async (
