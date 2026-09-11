@@ -9,8 +9,8 @@
   <a href="#"><img alt="Python 3.11" src="https://img.shields.io/badge/Python-3.11-3776AB?style=flat&logo=python&logoColor=white" /></a>
   <a href="#"><img alt="RAG" src="https://img.shields.io/badge/RAG-local--first-8A2BE2?style=flat" /></a>
   <a href="#"><img alt="License MIT" src="https://img.shields.io/badge/license-MIT-blue?style=flat" /></a>
-  <a href="https://github.com/fahimistiaq456-eng/TrustRAG/actions"><img alt="CI" src="https://img.shields.io/badge/CI-passing-brightgreen?style=flat&logo=githubactions&logoColor=white" /></a>
-  <a href="https://github.com/fahimistiaq456-eng"><img alt="Author" src="https://img.shields.io/badge/Author-Md.%20Fahim%20Istiaq%20Siam-orange?style=flat&logo=github" /></a>
+  <a href="https://github.com/fahimistiaq456-netizen/TrustRAG/actions"><img alt="CI" src="https://img.shields.io/badge/CI-passing-brightgreen?style=flat&logo=githubactions&logoColor=white" /></a>
+  <a href="https://github.com/fahimistiaq456-netizen"><img alt="Author" src="https://img.shields.io/badge/Author-Md.%20Fahim%20Istiaq%20Siam-orange?style=flat&logo=github" /></a>
   <a href="#"><img alt="local-only" src="https://img.shields.io/badge/data-100%25%20on--device-2ea44f?style=flat" /></a>
 </p>
 <p align="center">
@@ -33,7 +33,7 @@
 
 <p align="center">
   <strong>Md. Fahim Istiaq Siam</strong><br/>
-  🔗 <strong>GitHub:</strong> <a href="https://github.com/fahimistiaq456-eng">@fahimistiaq456-eng</a> &nbsp;|&nbsp; 📦 <strong>Repository:</strong> <a href="https://github.com/fahimistiaq456-eng/TrustRAG">TrustRAG</a><br/>
+  🔗 <strong>GitHub:</strong> <a href="https://github.com/fahimistiaq456-netizen">@fahimistiaq456-netizen</a> &nbsp;|&nbsp; 📦 <strong>Repository:</strong> <a href="https://github.com/fahimistiaq456-netizen/TrustRAG">TrustRAG</a><br/>
   <em>Focus: Local-First RAG Architecture · Evidence Grounding · Hallucination Abstention · NLI Verification</em>
 </p>
 
@@ -349,7 +349,7 @@ This project is released under the [MIT License](LICENSE).
 ---
 
 <p align="center">
-  Developed & Maintained by <strong><a href="https://github.com/fahimistiaq456-eng">Md. Fahim Istiaq Siam</a></strong><br/>
+  Developed & Maintained by <strong><a href="https://github.com/fahimistiaq456-netizen">Md. Fahim Istiaq Siam</a></strong><br/>
   Mitigating AI Hallucination with Evidence-First RAG in a Local, Privacy-Friendly Architecture.<br/>
   Built with ❤️ and <code>NO Api keys required</code>.
 </p>
