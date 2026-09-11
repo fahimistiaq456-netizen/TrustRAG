@@ -1,0 +1,6 @@
+{
+  "domain": "university",
+  "description": "Synthetic benchmark dataset for Hallufix.",
+  "license": "Public domain (self-authored, synthetic).",
+  "embedding_model": "sentence-transformers/all-MiniLM-L6-v2"
+}

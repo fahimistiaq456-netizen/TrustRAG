@@ -1,0 +1,40 @@
+[
+  {
+    "id": "fin-001",
+    "domain": "finance",
+    "expected_type": "answerable",
+    "question": "How many statements does a quarterly report include?",
+    "reference_answer": "three",
+    "expected_sources": [
+      "accounting.md"
+    ]
+  },
+  {
+    "id": "fin-002",
+    "domain": "finance",
+    "expected_type": "misleading",
+    "question": "A quarterly report includes five statements.",
+    "reference_answer": "No, three",
+    "expected_sources": [
+      "accounting.md"
+    ]
+  },
+  {
+    "id": "fin-003",
+    "domain": "finance",
+    "expected_type": "answerable",
+    "question": "What is compound interest calculated on?",
+    "reference_answer": "principal and accumulated interest",
+    "expected_sources": [
+      "investment.md"
+    ]
+  },
+  {
+    "id": "fin-004",
+    "domain": "finance",
+    "expected_type": "unanswerable",
+    "question": "What is today's exchange rate?",
+    "reference_answer": "",
+    "expected_sources": []
+  }
+]

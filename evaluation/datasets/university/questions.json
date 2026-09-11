@@ -1,0 +1,40 @@
+[
+  {
+    "id": "uni-001",
+    "domain": "university",
+    "expected_type": "answerable",
+    "question": "What is the graduation GPA cutoff?",
+    "reference_answer": "2.00",
+    "expected_sources": [
+      "academic_policy.md"
+    ]
+  },
+  {
+    "id": "uni-002",
+    "domain": "university",
+    "expected_type": "answerable",
+    "question": "How many credits are needed to graduate?",
+    "reference_answer": "120",
+    "expected_sources": [
+      "academic_policy.md"
+    ]
+  },
+  {
+    "id": "uni-003",
+    "domain": "university",
+    "expected_type": "misleading",
+    "question": "Can students withdraw after week 12?",
+    "reference_answer": "No, withdrawal ends within week 10",
+    "expected_sources": [
+      "academic_policy.md"
+    ]
+  },
+  {
+    "id": "uni-004",
+    "domain": "university",
+    "expected_type": "unanswerable",
+    "question": "What is the football team's win-loss record?",
+    "reference_answer": "",
+    "expected_sources": []
+  }
+]

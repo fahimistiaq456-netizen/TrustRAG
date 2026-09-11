@@ -1,0 +1,30 @@
+[
+  {
+    "id": "he-001",
+    "domain": "healthcare",
+    "expected_type": "answerable",
+    "question": "What is the recommended daily water intake?",
+    "reference_answer": "two litres",
+    "expected_sources": [
+      "first_aid_guide.md"
+    ]
+  },
+  {
+    "id": "he-002",
+    "domain": "healthcare",
+    "expected_type": "misleading",
+    "question": "Is a heart attack treatable with rest alone?",
+    "reference_answer": "No, urgent medical attention",
+    "expected_sources": [
+      "first_aid_guide.md"
+    ]
+  },
+  {
+    "id": "he-003",
+    "domain": "healthcare",
+    "expected_type": "unanswerable",
+    "question": "What is the price of a flu vaccine?",
+    "reference_answer": "",
+    "expected_sources": []
+  }
+]

@@ -1,0 +1,30 @@
+[
+  {
+    "id": "law-001",
+    "domain": "law",
+    "expected_type": "answerable",
+    "question": "Within how many days must a complaint be filed?",
+    "reference_answer": "thirty days",
+    "expected_sources": [
+      "civil_procedure.md"
+    ]
+  },
+  {
+    "id": "law-002",
+    "domain": "law",
+    "expected_type": "contradiction",
+    "question": "A complaint can be filed at any time.",
+    "reference_answer": "No, within thirty days",
+    "expected_sources": [
+      "civil_procedure.md"
+    ]
+  },
+  {
+    "id": "law-003",
+    "domain": "law",
+    "expected_type": "unanswerable",
+    "question": "What is the jury selection cost?",
+    "reference_answer": "",
+    "expected_sources": []
+  }
+]

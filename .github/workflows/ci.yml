@@ -1,0 +1,54 @@
+name: TrustRAG CI
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  backend-test:
+    name: Backend Pytest Suite
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run Backend Tests
+        run: |
+          pytest -v
+
+  frontend-build:
+    name: Next.js Frontend Build & Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+          cache-dependency-path: webapp/package-lock.json
+
+      - name: Install webapp dependencies
+        working-directory: webapp
+        run: npm ci
+
+      - name: Run ESLint & Build
+        working-directory: webapp
+        run: |
+          npm run lint
+          npm run build

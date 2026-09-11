@@ -1,0 +1,30 @@
+[
+  {
+    "id": "tech-001",
+    "domain": "technology",
+    "expected_type": "answerable",
+    "question": "What is the smallest deployable unit in a cluster?",
+    "reference_answer": "pod",
+    "expected_sources": [
+      "kubernetes_manual.md"
+    ]
+  },
+  {
+    "id": "tech-002",
+    "domain": "technology",
+    "expected_type": "multi-hop",
+    "question": "Which component coordinates the scheduling of pods?",
+    "reference_answer": "control plane",
+    "expected_sources": [
+      "kubernetes_manual.md"
+    ]
+  },
+  {
+    "id": "tech-003",
+    "domain": "technology",
+    "expected_type": "unanswerable",
+    "question": "What GPU vendor ships the cluster?",
+    "reference_answer": "",
+    "expected_sources": []
+  }
+]
