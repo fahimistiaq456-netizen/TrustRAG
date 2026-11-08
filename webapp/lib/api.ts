@@ -7,7 +7,12 @@ import type {
   SourcesStatus,
 } from "./types";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://127.0.0.1:8000";
+const rawUrl = process.env.NEXT_PUBLIC_API_URL?.trim();
+const API_URL = rawUrl
+  ? rawUrl.startsWith("http://") || rawUrl.startsWith("https://")
+    ? rawUrl.replace(/\/+$/, "")
+    : `https://${rawUrl.replace(/\/+$/, "")}`
+  : "http://127.0.0.1:8000";
 
 export class ApiError extends Error {
   status: number;

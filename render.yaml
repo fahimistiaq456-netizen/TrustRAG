@@ -1,0 +1,51 @@
+# Render.com Blueprint configuration
+# Docs: https://render.com/docs/yaml-spec
+
+services:
+  # ── TrustRAG FastAPI Backend (Evidence-First RAG) ─────────────────────────
+  - type: web
+    name: trustrag-siam-backend
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    region: oregon
+    branch: main
+    healthCheckPath: /health
+
+    envVars:
+      - key: HALLUFIX_INDEX_DIR
+        value: data/index
+
+      - key: HALLUFIX_ABSTENTION_THRESHOLD
+        value: "0.25"
+
+      - key: HALLUFIX_OLLAMA_HOST
+        value: "http://127.0.0.1:11434"
+
+      - key: HALLUFIX_OLLAMA_MODEL
+        value: llama3.2:3b
+
+      - key: HALLUFIX_RERANKER_ENABLED
+        value: "false"
+
+      - key: HALLUFIX_NLI_ENABLED
+        value: "false"
+
+      - key: HALLUFIX_GRAPH_ENABLED
+        value: "false"
+
+      - key: HALLUFIX_AUTH_ENABLED
+        value: "false"
+
+      - key: HALLUFIX_JWT_SECRET
+        generateValue: true
+
+      - key: HALLUFIX_ACCESS_TOKEN_EXPIRE_MINUTES
+        value: "60"
+
+      - key: HALLUFIX_CORS_ORIGINS
+        value: "*"
+
+      # Optional free Groq API key for cloud 24/7 interviews
+      - key: GROQ_API_KEY
+        sync: false
