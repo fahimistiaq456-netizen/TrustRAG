@@ -44,4 +44,23 @@ services:
         value: "60"
 
       - key: HALLUFIX_CORS_ORIGINS
-        value: "https://trustrag-kappa.vercel.app,http://localhost:3000"
+        value: "*"
+
+  # ── TrustRAG Next.js Frontend ─────────────────────────────────────────────
+  - type: web
+    name: trustrag-frontend
+    runtime: node
+    rootDir: webapp
+    buildCommand: npm install && npm run build
+    startCommand: npm run start
+    plan: free
+    region: oregon
+    branch: main
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      - key: NEXT_PUBLIC_API_URL
+        fromService:
+          type: web
+          name: trustrag-backend
+          property: host
