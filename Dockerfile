@@ -30,9 +30,6 @@ RUN mkdir -p data/index data/sources logs
 # Expose standard port
 EXPOSE 8000
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
-    CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')" || exit 1
-
-# Start Uvicorn bound to 0.0.0.0 and PORT (Render assigns dynamic PORT)
+# Start Uvicorn bound to 0.0.0.0 and PORT (Render assigns dynamic PORT, default 8000)
 CMD ["sh", "-c", "uvicorn backend.api:app --host 0.0.0.0 --port ${PORT:-8000} --workers 1"]
+
