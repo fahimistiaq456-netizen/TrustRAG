@@ -24,11 +24,12 @@ WORKDIR /app
 # Copy installed packages from builder
 COPY --from=builder /install /usr/local
 
-# Copy application source
+# Copy application source and pre-built index / sources
 COPY backend/ ./backend/
+COPY data/ ./data/
 COPY .env.example .env.example
 
-# Create data directories expected at runtime
+# Create data and log directories expected at runtime
 RUN mkdir -p data/index data/sources logs
 
 # Expose the FastAPI port

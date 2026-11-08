@@ -7,28 +7,24 @@ services:
     name: trustrag-backend
     runtime: docker
     dockerfilePath: ./Dockerfile
-    plan: free          # upgrade to starter ($7/mo) for always-on
-    region: oregon      # us-west-2 — closest to most users
+    plan: free
+    region: oregon
     branch: main
     healthCheckPath: /health
 
     envVars:
-      # ── Core settings ────────────────────────────────────────────────────
       - key: HALLUFIX_INDEX_DIR
         value: data/index
 
       - key: HALLUFIX_ABSTENTION_THRESHOLD
         value: "0.25"
 
-      # ── Ollama – point this at any hosted Ollama instance you run ────────
-      # Leave empty / remove if you do not use Ollama in production.
       - key: HALLUFIX_OLLAMA_HOST
         value: ""
 
       - key: HALLUFIX_OLLAMA_MODEL
         value: llama3.2:3b
 
-      # ── Optional features (all off by default) ───────────────────────────
       - key: HALLUFIX_RERANKER_ENABLED
         value: "false"
 
@@ -41,14 +37,11 @@ services:
       - key: HALLUFIX_AUTH_ENABLED
         value: "false"
 
-      # ── IMPORTANT: set a real secret in the Render dashboard ─────────────
       - key: HALLUFIX_JWT_SECRET
-        sync: false       # Render prompts you to enter this in the dashboard
+        generateValue: true
 
       - key: HALLUFIX_ACCESS_TOKEN_EXPIRE_MINUTES
         value: "60"
 
-      # ── CORS – allow requests from your Vercel frontend ──────────────────
-      # Replace trustrag-kappa.vercel.app with your actual Vercel URL(s).
       - key: HALLUFIX_CORS_ORIGINS
-        value: "https://trustrag-kappa.vercel.app,https://trustrag-kappa.vercel.app"
+        value: "https://trustrag-kappa.vercel.app,http://localhost:3000"
