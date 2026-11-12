@@ -40,14 +40,27 @@ app = FastAPI(title="TrustRAG Local API", version="2.1.0")
 logger = logging.getLogger(__name__)
 SOURCES_DIR = Path("data/sources")
 
-# Browser access for the local Next.js frontend (`npm run dev` on port 3000).
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=[origin.strip() for origin in os.getenv("HALLUFIX_CORS_ORIGINS", "http://localhost:3000,http://127.0.0.1:3000").split(",") if origin.strip()],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+# Browser access for the local Next.js frontend and Vercel cloud deployment.
+cors_origins_env = os.getenv("HALLUFIX_CORS_ORIGINS", "*")
+parsed_origins = [origin.strip() for origin in cors_origins_env.split(",") if origin.strip()]
+
+if "*" in parsed_origins:
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origin_regex=r".*",
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+else:
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=parsed_origins,
+        allow_origin_regex=r"https://.*\.vercel\.app|http://localhost:.*|http://127\.0\.0\.1:.*",
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
 
 # Mount auth, evaluation and admin route groups.
 app.include_router(auth_router)
