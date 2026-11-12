@@ -38,26 +38,32 @@ def _chat_groq(messages: list[dict[str, str]], api_key: str, temperature: float 
     except Exception:
         pass
 
+    # Filter out guardrails, audio, vision and non-chat models
+    excluded_keywords = ["guard", "safeguard", "whisper", "vision", "embed", "rerank", "moderation", "audio", "vl"]
+    chat_active = [
+        m for m in active_models
+        if not any(k in m.lower() for k in excluded_keywords)
+    ]
+
     preferred_candidates = [
         os.getenv("GROQ_MODEL", "").strip(),
-        "llama-3.1-8b-instant",
         "llama-3.3-70b-versatile",
-        "llama3-8b-8192",
         "llama3-70b-8192",
+        "llama3-8b-8192",
         "mixtral-8x7b-32768",
         "gemma2-9b-it",
     ]
 
     candidates: list[str] = []
-    # If active models retrieved, pick preferred ones that are actively supported
     for p in preferred_candidates:
-        if p and p in active_models and p not in candidates:
+        if p and p in chat_active and p not in candidates:
             candidates.append(p)
-    # Add any other active llama models
-    for a in active_models:
+    for a in chat_active:
         if "llama" in a.lower() and a not in candidates:
             candidates.append(a)
-    # Fallback to defaults if model list couldn't be retrieved
+    for a in chat_active:
+        if a not in candidates:
+            candidates.append(a)
     for p in preferred_candidates:
         if p and p not in candidates:
             candidates.append(p)
