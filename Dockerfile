@@ -7,6 +7,9 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONPATH=/app
+
 # Install minimal system build dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
@@ -19,8 +22,9 @@ RUN pip install --no-cache-dir torch --index-url https://download.pytorch.org/wh
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy application source, pre-built index and handbook documents
+# Copy application source, evaluation suite, pre-built index and handbook documents
 COPY backend/ ./backend/
+COPY evaluation/ ./evaluation/
 COPY data/ ./data/
 COPY .env.example .env.example
 
