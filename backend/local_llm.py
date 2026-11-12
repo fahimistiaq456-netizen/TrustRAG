@@ -28,23 +28,40 @@ def _chat_groq(messages: list[dict[str, str]], api_key: str, temperature: float 
         "Authorization": f"Bearer {api_key.strip()}",
         "Content-Type": "application/json",
     }
-    groq_model = os.getenv("GROQ_MODEL", "llama-3.2-3b-preview")
-    payload: dict[str, Any] = {
-        "model": groq_model,
-        "messages": messages,
-        "temperature": temperature,
-        "stream": False,
-    }
-    if json_mode:
-        payload["response_format"] = {"type": "json_object"}
-    res = requests.post(url, json=payload, headers=headers, timeout=60)
-    res.raise_for_status()
-    data = res.json()
-    choices = data.get("choices", [])
-    if not choices:
-        raise LocalLLMError("Groq returned an empty choice list.")
-    content = choices[0].get("message", {}).get("content", "")
-    return content.strip()
+    candidate_models = [
+        os.getenv("GROQ_MODEL", "").strip(),
+        "llama-3.1-8b-instant",
+        "llama-3.3-70b-versatile",
+        "llama-3.2-3b-preview",
+        "llama-3.2-1b-preview",
+    ]
+    # Remove empty entries while preserving order
+    candidates = [m for i, m in enumerate(candidate_models) if m and m not in candidate_models[:i]]
+
+    last_error = ""
+    for model in candidates:
+        payload: dict[str, Any] = {
+            "model": model,
+            "messages": messages,
+            "temperature": temperature,
+            "stream": False,
+        }
+        if json_mode:
+            payload["response_format"] = {"type": "json_object"}
+        try:
+            res = requests.post(url, json=payload, headers=headers, timeout=60)
+            if res.status_code == 200:
+                data = res.json()
+                choices = data.get("choices", [])
+                if choices:
+                    return choices[0].get("message", {}).get("content", "").strip()
+            err_data = res.json() if "application/json" in res.headers.get("content-type", "") else {}
+            last_error = err_data.get("error", {}).get("message", res.text)
+        except Exception as e:
+            last_error = str(e)
+            continue
+
+    raise LocalLLMError(f"Groq Cloud fallback failed: {last_error}")
 
 
 def chat(messages: list[dict[str, str]], temperature: float = 0.2, json_mode: bool = False) -> str:
