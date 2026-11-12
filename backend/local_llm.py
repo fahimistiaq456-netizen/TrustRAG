@@ -28,17 +28,41 @@ def _chat_groq(messages: list[dict[str, str]], api_key: str, temperature: float 
         "Authorization": f"Bearer {api_key.strip()}",
         "Content-Type": "application/json",
     }
-    candidate_models = [
+
+    # 1. Dynamically query Groq for supported active models for this API key
+    active_models: list[str] = []
+    try:
+        r = requests.get("https://api.groq.com/openai/v1/models", headers=headers, timeout=10)
+        if r.status_code == 200:
+            active_models = [m.get("id") for m in r.json().get("data", []) if m.get("id")]
+    except Exception:
+        pass
+
+    preferred_candidates = [
         os.getenv("GROQ_MODEL", "").strip(),
         "llama-3.1-8b-instant",
         "llama-3.3-70b-versatile",
-        "llama-3.2-3b-preview",
-        "llama-3.2-1b-preview",
+        "llama3-8b-8192",
+        "llama3-70b-8192",
+        "mixtral-8x7b-32768",
+        "gemma2-9b-it",
     ]
-    # Remove empty entries while preserving order
-    candidates = [m for i, m in enumerate(candidate_models) if m and m not in candidate_models[:i]]
 
-    last_error = ""
+    candidates: list[str] = []
+    # If active models retrieved, pick preferred ones that are actively supported
+    for p in preferred_candidates:
+        if p and p in active_models and p not in candidates:
+            candidates.append(p)
+    # Add any other active llama models
+    for a in active_models:
+        if "llama" in a.lower() and a not in candidates:
+            candidates.append(a)
+    # Fallback to defaults if model list couldn't be retrieved
+    for p in preferred_candidates:
+        if p and p not in candidates:
+            candidates.append(p)
+
+    errors = []
     for model in candidates:
         payload: dict[str, Any] = {
             "model": model,
@@ -56,12 +80,13 @@ def _chat_groq(messages: list[dict[str, str]], api_key: str, temperature: float 
                 if choices:
                     return choices[0].get("message", {}).get("content", "").strip()
             err_data = res.json() if "application/json" in res.headers.get("content-type", "") else {}
-            last_error = err_data.get("error", {}).get("message", res.text)
+            msg = err_data.get("error", {}).get("message", res.text)
+            errors.append(f"{model} ({res.status_code}): {msg}")
         except Exception as e:
-            last_error = str(e)
+            errors.append(f"{model}: {e}")
             continue
 
-    raise LocalLLMError(f"Groq Cloud fallback failed: {last_error}")
+    raise LocalLLMError(f"Groq Cloud fallback failed. Attempts: {'; '.join(errors[:3])}")
 
 
 def chat(messages: list[dict[str, str]], temperature: float = 0.2, json_mode: bool = False) -> str:
