@@ -84,5 +84,6 @@ def available_models() -> list[str]:
     except (requests.RequestException, ValueError, KeyError):
         pass
     if os.getenv("GROQ_API_KEY", "").strip():
-        return ["llama-3.2-3b-preview (Cloud)"]
+        # In cloud environments with Groq enabled, report the active model so the UI activates
+        return [model_name(), f"{model_name()} (Groq Cloud)"]
     return []
