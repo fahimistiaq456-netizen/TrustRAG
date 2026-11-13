@@ -9,6 +9,7 @@ import {
   Server,
   ShieldCheck,
   Shuffle,
+  X,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -19,7 +20,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 
 export type ViewKey = "overview" | "normal" | "hallufix" | "hybrid" | "sources";
 
-const NAV_ITEMS: { key: ViewKey; label: string; icon: React.ReactNode; hint: string }[] = [
+export const NAV_ITEMS: { key: ViewKey; label: string; icon: React.ReactNode; hint: string }[] = [
   { key: "overview", label: "Overview", icon: <LayoutDashboard />, hint: "Status & comparison" },
   { key: "normal", label: "Normal chat", icon: <MessageSquareText />, hint: "Local model only" },
   { key: "hallufix", label: "TrustRAG", icon: <ShieldCheck />, hint: "Verified source answers" },
@@ -34,6 +35,8 @@ interface SidebarProps {
   healthLoading: boolean;
   onRefresh: () => void;
   apiUrl: string;
+  mobileOpen?: boolean;
+  onCloseMobile?: () => void;
 }
 
 export function Sidebar({
@@ -43,58 +46,95 @@ export function Sidebar({
   healthLoading,
   onRefresh,
   apiUrl,
+  mobileOpen = false,
+  onCloseMobile,
 }: SidebarProps) {
   const ollamaOk = health?.ollama_running ?? false;
 
   return (
-    <aside className="flex h-full w-72 shrink-0 flex-col border-r bg-neutral-950 text-neutral-100">
-      {/* Brand */}
-      <div className="flex items-center gap-3 px-5 py-5">
-        <div className="flex size-9 items-center justify-center rounded-lg bg-white text-sm font-bold text-neutral-950">
-          T
-        </div>
-        <div className="leading-tight">
-          <div className="text-sm font-semibold tracking-tight">TrustRAG</div>
-          <div className="text-[11px] text-neutral-500">Local LLM Laboratory</div>
-        </div>
-      </div>
+    <>
+      {/* Mobile Backdrop Overlay */}
+      {mobileOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-black/60 backdrop-blur-xs md:hidden"
+          onClick={onCloseMobile}
+          aria-hidden="true"
+        />
+      )}
 
-      <Separator className="bg-neutral-800" />
-
-      {/* Navigation */}
-      <nav className="flex-1 space-y-1 overflow-y-auto px-3 py-4">
-        <div className="px-2 pb-2 text-[11px] font-medium uppercase tracking-wider text-neutral-600">
-          Workbench
+      <aside
+        className={cn(
+          "h-full flex-col border-r bg-neutral-950 text-neutral-100 transition-all duration-200",
+          // Desktop: permanently visible docked sidebar
+          "hidden md:flex md:w-64 lg:w-72 md:shrink-0",
+          // Mobile: slide-in drawer
+          mobileOpen
+            ? "fixed inset-y-0 left-0 z-50 flex w-72 max-w-[85vw] shadow-2xl"
+            : "hidden"
+        )}
+      >
+        {/* Brand */}
+        <div className="flex items-center justify-between px-5 py-5">
+          <div className="flex items-center gap-3">
+            <div className="flex size-9 items-center justify-center rounded-lg bg-white text-sm font-bold text-neutral-950">
+              T
+            </div>
+            <div className="leading-tight">
+              <div className="text-sm font-semibold tracking-tight">TrustRAG</div>
+              <div className="text-[11px] text-neutral-500">Local LLM Laboratory</div>
+            </div>
+          </div>
+          {/* Mobile close button */}
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={onCloseMobile}
+            className="size-8 text-neutral-400 hover:bg-white/10 hover:text-white md:hidden"
+            aria-label="Close menu"
+          >
+            <X className="size-4" />
+          </Button>
         </div>
-        {NAV_ITEMS.map((item) => {
-          const isActive = active === item.key;
-          return (
-            <button
-              key={item.key}
-              onClick={() => onSelect(item.key)}
-              className={cn(
-                "flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm transition-colors",
-                isActive
-                  ? "bg-white font-medium text-neutral-950"
-                  : "text-neutral-400 hover:bg-white/10 hover:text-white"
-              )}
-            >
-              <span className={cn("[&_svg]:size-4", isActive ? "text-neutral-950" : "text-neutral-500")}>
-                {item.icon}
-              </span>
-              <span className="flex-1">{item.label}</span>
-              <span
+
+        <Separator className="bg-neutral-800" />
+
+        {/* Navigation */}
+        <nav className="flex-1 space-y-1 overflow-y-auto px-3 py-4">
+          <div className="px-2 pb-2 text-[11px] font-medium uppercase tracking-wider text-neutral-600">
+            Workbench
+          </div>
+          {NAV_ITEMS.map((item) => {
+            const isActive = active === item.key;
+            return (
+              <button
+                key={item.key}
+                onClick={() => {
+                  onSelect(item.key);
+                  onCloseMobile?.();
+                }}
                 className={cn(
-                  "hidden text-[11px]",
-                  isActive ? "text-neutral-500" : "text-neutral-700"
+                  "flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm transition-colors",
+                  isActive
+                    ? "bg-white font-medium text-neutral-950"
+                    : "text-neutral-400 hover:bg-white/10 hover:text-white"
                 )}
               >
-                {item.hint}
-              </span>
-            </button>
-          );
-        })}
-      </nav>
+                <span className={cn("[&_svg]:size-4", isActive ? "text-neutral-950" : "text-neutral-500")}>
+                  {item.icon}
+                </span>
+                <span className="flex-1">{item.label}</span>
+                <span
+                  className={cn(
+                    "hidden lg:inline text-[11px]",
+                    isActive ? "text-neutral-500" : "text-neutral-700"
+                  )}
+                >
+                  {item.hint}
+                </span>
+              </button>
+            );
+          })}
+        </nav>
 
       {/* Status */}
       <div className="space-y-3 border-t border-neutral-800 p-4">
@@ -161,5 +201,6 @@ export function Sidebar({
         <ThemeToggle />
       </div>
     </aside>
+    </>
   );
 }

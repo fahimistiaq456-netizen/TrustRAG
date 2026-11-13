@@ -1,10 +1,13 @@
 "use client";
 
 import * as React from "react";
+import { Menu } from "lucide-react";
 
 import { Sidebar, type ViewKey } from "@/components/sidebar";
 import { getHealth, hallufixAsk, hybridChat, normalChat } from "@/lib/api";
 import type { ChatMessage, Health, RenderedMeta, ViewMessage } from "@/lib/types";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import { OverviewView } from "@/views/overview-view";
 import { NormalView } from "@/views/normal-view";
 import { HallufixView } from "@/views/hallufix-view";
@@ -15,6 +18,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://127.0.0.1:8000";
 
 export default function Home() {
   const [view, setView] = React.useState<ViewKey>("overview");
+  const [mobileOpen, setMobileOpen] = React.useState(false);
   const [health, setHealth] = React.useState<Health | null>(null);
   const [healthLoading, setHealthLoading] = React.useState(true);
 
@@ -83,7 +87,42 @@ export default function Home() {
   const canSend = !!health?.ollama_running;
 
   return (
-    <div className="flex h-screen w-full overflow-hidden bg-background text-foreground">
+    <div className="flex h-[100dvh] w-full flex-col md:flex-row overflow-hidden bg-background text-foreground">
+      {/* Mobile Top Header */}
+      <header className="flex md:hidden items-center justify-between border-b bg-background/95 px-3 py-2.5 backdrop-blur-sm shrink-0 z-30">
+        <div className="flex items-center gap-2">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setMobileOpen(true)}
+            className="size-8.5 shrink-0 text-foreground"
+            aria-label="Open navigation menu"
+          >
+            <Menu className="size-5" />
+          </Button>
+          <div className="flex items-center gap-2">
+            <div className="flex size-7 items-center justify-center rounded-lg bg-foreground text-xs font-bold text-background">
+              T
+            </div>
+            <span className="text-sm font-semibold tracking-tight">TrustRAG</span>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 rounded-full border bg-card/80 px-2.5 py-1 text-xs">
+            <span
+              className={cn(
+                "size-2 rounded-full",
+                canSend ? "bg-emerald-500 animate-pulse" : "bg-red-500"
+              )}
+            />
+            <span className="font-mono text-[11px] text-muted-foreground">
+              {canSend ? "Online" : "Offline"}
+            </span>
+          </div>
+        </div>
+      </header>
+
       <Sidebar
         active={view}
         onSelect={setView}
@@ -91,8 +130,10 @@ export default function Home() {
         healthLoading={healthLoading}
         onRefresh={refreshHealth}
         apiUrl={API_URL}
+        mobileOpen={mobileOpen}
+        onCloseMobile={() => setMobileOpen(false)}
       />
-      <main className="min-w-0 flex-1">
+      <main className="min-w-0 flex-1 overflow-hidden flex flex-col">
         {view === "overview" && (
           <OverviewView
             health={health}

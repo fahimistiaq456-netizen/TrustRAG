@@ -54,21 +54,21 @@ export function ChatWorkspace({
 
   return (
     <div className="flex h-full min-h-0 flex-col">
-      <header className="border-b bg-background/95 px-6 py-4 backdrop-blur-sm">
+      <header className="border-b bg-background/95 px-4 py-3 sm:px-6 sm:py-4 backdrop-blur-sm shrink-0">
         <div className="flex items-center gap-3">
-          <div className="flex size-9 items-center justify-center rounded-lg bg-foreground text-background">
+          <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-foreground text-background">
             {icon}
           </div>
-          <div>
-            <h1 className="text-base font-semibold tracking-tight">{title}</h1>
-            <p className="text-sm text-muted-foreground">{description}</p>
+          <div className="min-w-0 flex-1">
+            <h1 className="text-sm sm:text-base font-semibold tracking-tight truncate">{title}</h1>
+            <p className="text-xs sm:text-sm text-muted-foreground truncate">{description}</p>
           </div>
         </div>
       </header>
 
       {children}
 
-      <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
+      <div ref={scrollRef} className="flex-1 overflow-y-auto px-3 py-4 sm:px-6 sm:py-6">
         <div className="mx-auto flex max-w-3xl flex-col gap-4">
           {history.length === 0 && !loading && <EmptyState />}
           {history.map((msg, index) => (
@@ -79,7 +79,7 @@ export function ChatWorkspace({
         </div>
       </div>
 
-      <div className="border-t bg-background px-4 py-4 sm:px-6">
+      <div className="border-t bg-background px-3 py-3 sm:px-6 sm:py-4 shrink-0">
         <div className="mx-auto max-w-3xl">
           <div className="flex items-end gap-2 rounded-xl border bg-card p-2 shadow-xs transition-colors focus-within:border-ring focus-within:ring-2 focus-within:ring-ring/20">
             <Textarea
@@ -98,7 +98,7 @@ export function ChatWorkspace({
                 }
               }}
               placeholder={placeholder ?? "Ask anything… (Enter to send)"}
-              className="max-h-40 min-h-[44px] flex-1 resize-none border-0 bg-transparent p-1.5 shadow-none focus-visible:ring-0"
+              className="max-h-40 min-h-[44px] flex-1 resize-none border-0 bg-transparent p-1.5 shadow-none focus-visible:ring-0 text-sm"
               disabled={loading}
             />
             <Button
@@ -112,7 +112,7 @@ export function ChatWorkspace({
             </Button>
           </div>
           <p className="mt-2 text-center text-[11px] text-muted-foreground">
-            Responses run fully on this machine via Ollama — no data leaves your Mac.
+            Evidence-first RAG with sentence claim verification & real-time citation auditing.
           </p>
         </div>
       </div>
@@ -166,7 +166,7 @@ function MessageRow({
   if (msg.role === "user") {
     return (
       <div className="flex justify-end">
-        <div className="max-w-[85%] whitespace-pre-wrap rounded-2xl rounded-br-sm bg-primary px-4 py-2.5 text-sm leading-relaxed text-primary-foreground">
+        <div className="max-w-[85%] break-words whitespace-pre-wrap rounded-2xl rounded-br-sm bg-primary px-3.5 py-2.5 sm:px-4 text-sm leading-relaxed text-primary-foreground">
           {msg.content}
         </div>
       </div>
@@ -175,13 +175,13 @@ function MessageRow({
 
   return (
     <div className="flex justify-start">
-      <div className="max-w-[92%]">
-        <div className="flex items-start gap-3">
+      <div className="max-w-[94%] sm:max-w-[85%]">
+        <div className="flex items-start gap-2.5 sm:gap-3">
           <div className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-secondary">
             <Sparkles className="size-3.5 text-muted-foreground" />
           </div>
           <div className="min-w-0 flex-1">
-            <div className="whitespace-pre-wrap rounded-2xl rounded-bl-sm border bg-card px-4 py-3 text-sm leading-relaxed text-card-foreground shadow-xs">
+            <div className="break-words whitespace-pre-wrap rounded-2xl rounded-bl-sm border bg-card px-3.5 py-2.5 sm:px-4 sm:py-3 text-sm leading-relaxed text-card-foreground shadow-xs">
               {msg.content}
             </div>
             {renderAssistantExtras?.(msg)}

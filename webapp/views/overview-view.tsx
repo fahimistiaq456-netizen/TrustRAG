@@ -71,30 +71,30 @@ export function OverviewView({
 
   return (
     <div className="flex h-full flex-col overflow-y-auto">
-      <header className="border-b bg-background/95 px-6 py-4 backdrop-blur-sm">
+      <header className="border-b bg-background/95 px-4 py-3 sm:px-6 sm:py-4 backdrop-blur-sm shrink-0">
         <div className="flex items-center gap-3">
-          <div className="flex size-9 items-center justify-center rounded-lg bg-foreground text-background">
+          <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-foreground text-background">
             <Bot className="size-4" />
           </div>
-          <div>
-            <h1 className="text-base font-semibold tracking-tight">TrustRAG Local Lab</h1>
-            <p className="text-sm text-muted-foreground">
-              Three answer modes, one local model — compare them side by side.
+          <div className="min-w-0 flex-1">
+            <h1 className="text-sm sm:text-base font-semibold tracking-tight truncate">TrustRAG Local Lab</h1>
+            <p className="text-xs sm:text-sm text-muted-foreground truncate">
+              Three answer modes, one model — compare verified RAG side by side.
             </p>
           </div>
         </div>
       </header>
 
-      <div className="mx-auto w-full max-w-4xl flex-1 space-y-6 px-6 py-6">
+      <div className="mx-auto w-full max-w-4xl flex-1 space-y-4 sm:space-y-6 px-4 py-4 sm:px-6 sm:py-6">
         <Card>
-          <CardContent className="py-5">
-            <div className="flex flex-wrap items-center justify-between gap-4">
+          <CardContent className="py-4 sm:py-5">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div className="flex items-center gap-3">
-                <div className="flex size-10 items-center justify-center rounded-lg bg-secondary">
+                <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-secondary">
                   <Server className="size-4 text-muted-foreground" />
                 </div>
-                <div>
-                  <div className="flex items-center gap-2 text-sm font-medium">
+                <div className="min-w-0">
+                  <div className="flex flex-wrap items-center gap-2 text-sm font-medium">
                     {healthLoading ? (
                       <Badge variant="outline">Checking…</Badge>
                     ) : ollamaOk ? (
@@ -110,19 +110,19 @@ export function OverviewView({
                   </div>
                   <p className="mt-1 text-xs text-muted-foreground">
                     {ollamaOk
-                      ? "Ollama is running locally."
-                      : "Start Uvicorn and Ollama, then refresh."}
+                      ? "LLM inference engine is online and ready."
+                      : "Connecting to FastAPI backend..."}
                   </p>
                 </div>
               </div>
-              <Button variant="outline" onClick={() => onNavigate("normal")}>
+              <Button variant="outline" className="w-full sm:w-auto" onClick={() => onNavigate("normal")}>
                 Start chatting <ArrowRight className="size-3.5" />
               </Button>
             </div>
           </CardContent>
         </Card>
 
-        <div className="grid gap-4 sm:grid-cols-3">
+        <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {MODES.map((mode) => {
             const history =
               mode.key === "normal"

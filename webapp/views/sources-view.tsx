@@ -77,21 +77,21 @@ export function SourcesView() {
 
   return (
     <div className="flex h-full flex-col overflow-y-auto">
-      <header className="border-b bg-background/95 px-6 py-4 backdrop-blur-sm">
+      <header className="border-b bg-background/95 px-4 py-3 sm:px-6 sm:py-4 backdrop-blur-sm shrink-0">
         <div className="flex items-center gap-3">
-          <div className="flex size-9 items-center justify-center rounded-lg bg-foreground text-background">
+          <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-foreground text-background">
             <Database className="size-4" />
           </div>
-          <div>
-            <h1 className="text-base font-semibold tracking-tight">Source library</h1>
-            <p className="text-sm text-muted-foreground">
-              Embed your PDF / TXT sources locally; they are ranked at question time.
+          <div className="min-w-0 flex-1">
+            <h1 className="text-sm sm:text-base font-semibold tracking-tight truncate">Source library</h1>
+            <p className="text-xs sm:text-sm text-muted-foreground truncate">
+              Embed your PDF / TXT sources; they are ranked at question time.
             </p>
           </div>
         </div>
       </header>
 
-      <div className="mx-auto w-full max-w-3xl flex-1 space-y-4 px-6 py-6">
+      <div className="mx-auto w-full max-w-3xl flex-1 space-y-4 px-4 py-4 sm:px-6 sm:py-6">
         {error && (
           <div className="rounded-lg border border-destructive/30 bg-destructive/5 px-4 py-3 text-sm text-destructive">
             {error}
